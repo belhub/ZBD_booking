@@ -15,7 +15,7 @@ export function Login() {
 
 
   return (
-    <div className="h-full w-full flex items-center justify-center bg-gray-100" >
+    <div className="mt-12 h-full w-full flex items-center justify-center " >
       <Card className="w-2xl p-6 shadow-lg rounded-2xl bg-white">
         <CardContent>
           <h2 className="text-2xl font-semibold text-center mb-6">Logowanie</h2>
