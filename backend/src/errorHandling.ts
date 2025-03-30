@@ -20,6 +20,6 @@ export function handleError(err: HttpError | unknown, res: Response,) {
 
   // inny błąd
   return res.status(500).json({
-    error: "Wystąpił nieoczekiwany błąd serwera",
+    error: `Wystąpił nieoczekiwany błąd serwera: ${err}`,
   });
 };

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { pool } from "../server";
+import { db } from "../server";
 import { handleError, HttpError } from "../errorHandling";
 
 const SALT_ROUNDS = 10;
@@ -11,14 +11,14 @@ export async function register(req: Request, res: Response) {
   const { email, password, first_name, last_name, dob } = req.body;
 
   try {
-    const userCheck = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    const userCheck = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     if (userCheck.rows.length > 0) {
       throw new HttpError("Użytkownik już istnieje", 400);
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-    const newUser = await pool.query(
+    const newUser = await db.query(
       `INSERT INTO users (email, password, first_name, last_name, dob) 
        VALUES ($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name`,
       [email, hashedPassword, first_name, last_name, dob]
@@ -34,7 +34,7 @@ export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
   try {
-    const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    const userResult = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     if (userResult.rows.length === 0) {
       throw new HttpError("Nieprawidłowy email lub hasło", 401);
     }
