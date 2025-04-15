@@ -12,6 +12,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@shared/*": [
+        "../shared/*"
       ]
     },
     "module": "ESNext",
@@ -30,6 +33,7 @@
     "noFallthroughCasesInSwitch": true,
   },
   "include": [
-    "src"
+    "src",
+    "../shared"
   ]
 }

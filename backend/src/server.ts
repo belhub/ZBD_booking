@@ -21,11 +21,13 @@ app.use(express.json());
 app.post("/api/auth/register", authController.register);
 app.post("/api/auth/login", authController.login);
 
-app.get("/api/users/getUsers", userController.getUsers);
+// app.get("/api/users/getUsers", userController.getUsers);
 
 // pobranie terminów na podstawie zakresu dat oraz miasta
-app.get("/api/hotel/getAvailableHotelsForDate", hotelController.getAvailableHotelsForDate);
+app.get("/api/hotel/getAvailableHotelsForDate/:city/:start_date/:end_date", hotelController.getAvailableHotelsForDate);
+app.get("/api/hotel/getHotelDetails/:id", hotelController.getHotelDetails);
 app.post("/api/hotel/createHotel", hotelController.createHotelWithAddress);
+app.put("/api/hotel/updateHotel/:id", hotelController.updateHotelInfo);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

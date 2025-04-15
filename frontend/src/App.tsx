@@ -2,8 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import { Login } from "./login/Login";
 import { Home } from "./homePage/Home";
-import { SearchHotel } from "./search/SearchHotel";
+import { SearchHotel } from "./hotel/SearchHotel";
 import { Navbar } from "./Navbar";
+import { CreateHotel } from "./hotel/CreateHotel";
+import { HotelDetails } from "./hotel/HotelDetails";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Login />} />
           <Route path="/search" element={<SearchHotel />} />
+          <Route path="/createHotel" element={<CreateHotel />} />
+          <Route path="/hotelDetails/:id" element={<HotelDetails />} />
         </Routes>
       </div>
     </Router>

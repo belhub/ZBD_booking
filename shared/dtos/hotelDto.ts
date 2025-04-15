@@ -8,8 +8,8 @@ export interface HotelDto {
   country: string;
   number: number;
   postal_code: string;
-
 }
+
 export interface CreateHotelDto {
   name: string;
   street: string;
@@ -25,4 +25,5 @@ export interface GetAvailableHotelsDto {
   city: string;
   end_date: string;
   start_date: string;
+  guests: number;
 };
