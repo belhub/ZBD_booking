@@ -9,10 +9,24 @@ export function SearchHotelBar({ onSelectFilters }: SearchHotelBarProps) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [city, setCity] = useState("");
-  const [guests, setGuests] = useState<number>(2);
-  // todo: strat_date musi być mniejsze od end_date
-  // todo: wyświetlenie komunikatu o niewypełnionym polu - lista dostępnych miast
+  const [capacity, setCapacity] = useState<number>(2);
+  const [searchBarInfo, setSearchBarInfo] = useState("");
+  const [showError, setShowError] = useState(false);
 
+  const handleSearch = () => {
+    if (!startDate || !endDate || !city || !capacity) {
+      setSearchBarInfo("Wszystkie pola muszą być wypełnione!");
+      setShowError(true);
+      return 0;
+    } else if (startDate > endDate) {
+      setSearchBarInfo("Data rozpoczęcia musi być mniejsza niż data zakończenia!");
+      setShowError(true);
+      return 0;
+    }
+    setSearchBarInfo("");
+    setShowError(false);
+    onSelectFilters({ start_date: startDate, end_date: endDate, city, capacity });
+  }
   return (
     <div className="flex">
       <Card className="w-full max-w-4xl p-6 shadow-lg rounded-2xl bg-white">
@@ -32,12 +46,13 @@ export function SearchHotelBar({ onSelectFilters }: SearchHotelBarProps) {
             </div>
             <div>
               <Label htmlFor="guests" className="block mb-2">Liczba osób</Label>
-              <Input id="guests" type="number" placeholder="Wpisz liczbę osób" className="w-full" onChange={(e) => setGuests(e.target.valueAsNumber)} />
+              <Input id="guests" type="number" placeholder="Wpisz liczbę osób" className="w-full" onChange={(e) => setCapacity(e.target.valueAsNumber)} />
             </div>
             <div className="flex items-end">
-              <Button className="w-full" onClick={() => onSelectFilters({ start_date: startDate, end_date: endDate, city, guests })}>Szukaj</Button>
+              <Button className="w-full" onClick={() => handleSearch()}>Szukaj</Button>
             </div>
           </div>
+          {showError && <p className="mt-2 text-yellow-700">{searchBarInfo}</p>}
         </CardContent>
       </Card>
     </div>

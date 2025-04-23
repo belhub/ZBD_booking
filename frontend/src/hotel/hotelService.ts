@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateHotelDto, GetAvailableHotelsDto, HotelDto } from "@shared/dtos/hotelDto";
+import { CreateHotelDto, CreateReservationDto, CreateReservationResponseDto, GetAvailableHotelsDto, HotelDetailsDto, HotelDto } from "@shared/dtos/hotelDto";
 /*
 // src/services/apiClient.ts
 import axios from "axios";
@@ -20,11 +20,12 @@ export const getHotels = () => api.get("/hotels");
 
 */
 
-const API_URL = "http://localhost:5634/api/hotel";
+// todo: logowanie i zablokownie dostępów 
+const API_URL = "http://localhost:5634/api/";
 
 export const getHotels = async (reqDto: GetAvailableHotelsDto): Promise<HotelDto[]> => {
   try {
-    const response = await axios.get<HotelDto[]>(`${API_URL}/getAvailableHotelsForDate/${reqDto.city}/${reqDto.start_date}/${reqDto.end_date}`);
+    const response = await axios.get<HotelDto[]>(`${API_URL}hotel/getAvailableHotelsForDate/${reqDto.city}/${reqDto.start_date}/${reqDto.end_date}/${reqDto.capacity}`);
     return response.data;
   } catch (error) {
     console.error("Błąd podczas pobierania dostępnych hoteli:", error);
@@ -32,11 +33,31 @@ export const getHotels = async (reqDto: GetAvailableHotelsDto): Promise<HotelDto
   }
 };
 
+export const getHotelDetails = async (hotelId: string, roomIds: string[]): Promise<HotelDetailsDto | null> => {
+  try {
+    const response = await axios.get<HotelDetailsDto>(`${API_URL}hotel/getHotelDetails/${hotelId}/${roomIds}`);
+    return response.data;
+  } catch (error) {
+    console.error("Błąd podczas pobierania dostępnych hoteli:", error);
+    return null;
+  }
+};
+
 export const createHotelWithAddress = async (createDto: CreateHotelDto) => {
   try {
-    const response = await axios.post(`${API_URL}/createHotel`, createDto);
+    const response = await axios.post(`${API_URL}hotel/createHotel`, createDto);
     return response.data;
   } catch (error) {
     console.error("Błąd podczas tworzenia hotelu:", error);
   }
 };
+
+export const createReservation = async (createReservationDto: CreateReservationDto): Promise<CreateReservationResponseDto[]> => {
+  try {
+    const response = await axios.post<CreateReservationResponseDto[]>(`${API_URL}reservation/createReservation`, createReservationDto);
+    return response.data;
+  } catch (error) {
+    console.error("Błąd podczas tworzenia rezerwacji:", error);
+    return [];
+  }
+}
